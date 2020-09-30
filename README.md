@@ -63,6 +63,21 @@ Don't worry about the "No GitHub API authentication could be found" message. [AP
 
 6. Now browse to [http://localhost:4000](http://localhost:4000)
 
+### rbenv
+
+1. Change into [ruby environment](https://github.com/rbenv/rbenv)
+```
+rbenv init
+```
+2. Install missing gems
+```
+bundle install
+```
+3. Build the site and make it available on a local server
+```
+bundle exec jekyll serve
+```
+
 ### Publish
 
 When you host your personal website's code on GitHub, you get the support of free hosting through GitHub Pages.
