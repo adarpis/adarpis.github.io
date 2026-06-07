@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adrian Arpi Saldaña - Automation Control, Embedded & IoT Engineer</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0fdfa',
+              100: '#ccfbf1',
+              200: '#99f6e4',
+              300: '#5eead4',
+              400: '#2dd4bf',
+              500: '#14b8a6', // Teal
+              600: '#0d9488',
+              700: '#0f766e',
+              800: '#115e59',
+              900: '#134e4a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Custom Styling Rules -->
+  <style>
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+    
+    /* Elegant Bilingual Support CSS */
+    html:not(.lang-pt) .lang-pt { display: none !important; }
+    html.lang-pt .lang-en { display: none !important; }
+    
+    /* Print Stylesheet for PDF Generation */
+    @media print {
+      body {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        font-size: 11pt !important;
+        line-height: 1.4 !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .print-full-width {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        display: block !important;
+      }
+      .print-grid {
+        display: block !important;
+      }
+      .print-page-break {
+        page-break-before: always;
+      }
+      .print-no-break {
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+      /* Clean up borders and shadows for print */
+      .card-shadow {
+        box-shadow: none !important;
+        border: 1px solid #e2e8f0 !important;
+      }
+      /* Reset interactive highlights on print */
+      .skill-badge {
+        background-color: #f1f5f9 !important;
+        color: #0f172a !important;
+        border: 1px solid #cbd5e1 !important;
+        opacity: 1 !important;
+      }
+      a {
+        text-decoration: underline !important;
+        color: #0f172a !important;
+      }
+    }
+    
+    /* Animation for interactive filtering */
+    .fade-out {
+      opacity: 0.35;
+      transform: scale(0.98);
+      filter: grayscale(80%);
+    }
+    .highlight-glow {
+      outline: 2px solid #0d9488;
+      box-shadow: 0 0 15px rgba(13, 148, 136, 0.4);
+    }
+  </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 transition-colors duration-300 antialiased min-h-screen pb-12">
+
+  <!-- Floating Nav Controls (No-Print) -->
+  <div class="no-print fixed bottom-6 right-6 z-50 flex flex-col gap-3">
+    <!-- Language Switcher Floating Button -->
+    <button onclick="toggleLanguage()" class="bg-brand-600 hover:bg-brand-700 text-white p-3.5 rounded-full shadow-lg flex items-center justify-center transition-all duration-200 transform hover:scale-105 group" title="Change Language / Mudar Idioma">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 11.37 7.31 16.5 3 19" />
+      </svg>
+      <span class="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out whitespace-nowrap pl-0 group-hover:pl-2 text-sm font-semibold">
+        <span class="lang-en">Português (PT)</span>
+        <span class="lang-pt">English (EN)</span>
+      </span>
+    </button>
+
+    <!-- Print / PDF Button -->
+    <button onclick="window.print()" class="bg-brand-600 hover:bg-brand-700 text-white p-3.5 rounded-full shadow-lg flex items-center justify-center transition-all duration-200 transform hover:scale-105 group" title="Save / Print PDF">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+      </svg>
+      <span class="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-in-out whitespace-nowrap pl-0 group-hover:pl-2 text-sm font-semibold">
+        <span class="lang-en">Print / Save PDF</span>
+        <span class="lang-pt">Imprimir / Salvar PDF</span>
+      </span>
+    </button>
+    
+    <!-- Dark Mode Toggle -->
+    <button id="themeToggleBtn" onclick="toggleDarkMode()" class="bg-slate-800 dark:bg-slate-100 text-slate-100 dark:text-slate-800 p-3.5 rounded-full shadow-lg flex items-center justify-center transition-all duration-200 transform hover:scale-105" title="Toggle Theme">
+      <svg id="themeToggleDarkIcon" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+      </svg>
+      <svg id="themeToggleLightIcon" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707m12.728 12.728L5 12" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Main Container -->
+  <div class="max-w-6xl mx-auto px-4 pt-8 md:pt-12 print-full-width print-no-break">
+    
+    <!-- Top Interactive Header Panel (No-Print) -->
+    <div class="no-print mb-6 bg-gradient-to-r from-brand-600 to-brand-800 dark:from-brand-800 dark:to-teal-950 text-white rounded-2xl p-6 md:p-8 shadow-xl flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+      <div>
+        <div class="flex items-center gap-3">
+          <span class="px-3 py-1 bg-brand-500/30 border border-brand-300/30 rounded-full text-xs font-semibold uppercase tracking-wider text-teal-200">
+            <span class="lang-en">Interactive Dashboard</span>
+            <span class="lang-pt">Painel Interativo</span>
+          </span>
+          <span class="inline-flex items-center h-2.5 w-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        </div>
+        <h1 class="text-2xl md:text-3xl font-extrabold mt-2">Adrian Arpi Saldaña</h1>
+        <p class="text-teal-100 mt-1 max-w-xl text-sm md:text-base">
+          <span class="lang-en">Click any skill badge below to instantly highlight corresponding job histories and specialized projects where that technology was deployed!</span>
+          <span class="lang-pt">Clique em qualquer selo de habilidade abaixo para destacar instantaneamente os históricos de trabalho e projetos especializados onde a tecnologia foi aplicada!</span>
+        </p>
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <button onclick="toggleLanguage()" class="px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-lg text-xs font-bold uppercase transition duration-200 flex items-center gap-1.5">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-teal-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 11.37 7.31 16.5 3 19" />
+          </svg>
+          <span class="lang-en">Mudar para PT</span>
+          <span class="lang-pt">Switch to EN</span>
+        </button>
+        <button onclick="clearTagFilters()" id="clearFiltersBtn" class="px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-lg text-xs font-bold uppercase transition duration-200 hidden">
+          <span class="lang-en">Reset Highlight</span>
+          <span class="lang-pt">Redefinir Filtros</span>
+        </button>
+        <button onclick="window.print()" class="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-bold rounded-lg text-sm flex items-center gap-2 shadow-md transition duration-200">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+          </svg>
+          <span class="lang-en">Export CV (PDF)</span>
+          <span class="lang-pt">Exportar Currículo</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- CV Layout Structure -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 print-grid">
+      
+      <!-- LEFT SIDEBAR: Personal Branding & Core Details -->
+      <aside class="col-span-1 lg:col-span-4 space-y-6 print-full-width">
+        <!-- Profile Card -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-md border border-slate-100 dark:border-slate-700/50 card-shadow">
+          <div class="flex flex-col items-center text-center">
+            <!-- Initial Graphic Placeholder -->
+            <div class="w-24 h-24 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center border-4 border-brand-500 shadow-inner mb-4 relative">
+              <span class="text-3xl font-bold text-slate-700 dark:text-slate-200">AS</span>
+              <span class="absolute bottom-0 right-1 w-5 h-5 rounded-full bg-emerald-500 border-2 border-white dark:border-slate-800 flex items-center justify-center" title="Available for immediate contribution">
+                <span class="w-2 h-2 rounded-full bg-white"></span>
+              </span>
+            </div>
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-white font-sans tracking-tight">ADRIAN ARPI SALDAÑA</h2>
+            
+            <!-- Dynamically Aligned Badges -->
+            <div class="mt-2.5 inline-block px-3.5 py-1.5 bg-brand-50 dark:bg-brand-900/30 text-brand-700 dark:text-brand-300 rounded-full border border-brand-100 dark:border-brand-800/50">
+              <p class="font-bold text-xs uppercase tracking-wider">
+                <span class="lang-en">Automation Control, Embedded & IoT Engineer</span>
+                <span class="lang-pt">Engenheiro de Automação e Controle, Embarcados & IoT</span>
+              </p>
+            </div>
+            
+            <p class="text-slate-500 dark:text-slate-400 text-xs mt-3">
+              📍 Joinville, Santa Catarina, 
+              <span class="lang-en">Brazil</span>
+              <span class="lang-pt">Brasil</span>
+            </p>
+          </div>
+
+          <!-- Contact Details -->
+          <div class="mt-6 pt-6 border-t border-slate-100 dark:border-slate-700/50 space-y-3.5 text-sm">
+            <a href="mailto:adrian.d.arpi.s1@gmail.com" class="flex items-center gap-3 text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 transition duration-150">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-brand-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              <span class="truncate">adrian.d.arpi.s1@gmail.com</span>
+            </a>
+            <a href="tel:+5547984154867" class="flex items-center gap-3 text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 transition duration-150">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-brand-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+              </svg>
+              <span>+55 (47) 984154867</span>
+            </a>
+            <a href="https://www.linkedin.com/in/adarpis" target="_blank" class="flex items-center gap-3 text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 transition duration-150">
+              <svg class="h-5 w-5 text-brand-500 shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+              </svg>
+              <span>linkedin.com/in/adarpis</span>
+            </a>
+            <a href="https://github.com/adarpis" target="_blank" class="flex items-center gap-3 text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 transition duration-150">
+              <svg class="h-5 w-5 text-brand-500 shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.137 20.162 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
+              </svg>
+              <span>github.com/adarpis</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Languages Card -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-md border border-slate-100 dark:border-slate-700/50 card-shadow print-no-break">
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2 mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-brand-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 11.37 7.31 16.5 3 19" />
+            </svg>
+            <span class="lang-en">Languages</span>
+            <span class="lang-pt">Idiomas</span>
+          </h3>
+          <div class="space-y-3.5">
+            <div>
+              <div class="flex justify-between text-xs font-semibold uppercase tracking-wider mb-1">
+                <span class="lang-en">Portuguese</span>
+                <span class="lang-pt">Português</span>
+                <span class="text-brand-600 dark:text-brand-400">
+                  <span class="lang-en">Professional</span>
+                  <span class="lang-pt">Profissional</span>
+                </span>
+              </div>
+              <div class="w-full bg-slate-100 dark:bg-slate-700 h-1.5 rounded-full overflow-hidden">
+                <div class="bg-brand-500 h-full rounded-full" style="width: 90%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between text-xs font-semibold uppercase tracking-wider mb-1">
+                <span class="lang-en">English</span>
+                <span class="lang-pt">Inglês</span>
+                <span class="text-brand-600 dark:text-brand-400">
+                  <span class="lang-en">Professional</span>
+                  <span class="lang-pt">Profissional</span>
+                </span>
+              </div>
+              <div class="w-full bg-slate-100 dark:bg-slate-700 h-1.5 rounded-full overflow-hidden">
+                <div class="bg-brand-500 h-full rounded-full" style="width: 65%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Certifications -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-md border border-slate-100 dark:border-slate-700/50 card-shadow print-no-break">
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2 mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-brand-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138z" />
+            </svg>
+            <span class="lang-en">Certifications</span>
+            <span class="lang-pt">Certificações</span>
+          </h3>
+          <ul class="space-y-3 text-sm text-slate-600 dark:text-slate-300">
+            <li class="flex items-start gap-2">
+              <span class="text-brand-500 mt-0.5">•</span>
+              <span>
+                <span class="lang-en">C & C++ Programming Specialization</span>
+                <span class="lang-pt">Especialização em Programação C & C++</span>
+              </span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-brand-500 mt-0.5">•</span>
+              <span>
+                <span class="lang-en">Python 3 & Object-Oriented Programming (OOP)</span>
+                <span class="lang-pt">Python 3 & Programação Orientada a Objetos (POO)</span>
+              </span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-brand-500 mt-0.5">•</span>
+              <span>
+                <span class="lang-en">Swift 4 & iOS Development Fundamentals</span>
+                <span class="lang-pt">Fundamentos de Desenvolvimento iOS & Swift 4</span>
+              </span>
+            </li>
+          </ul>
+        </div>
+      </aside>
+
+      <!-- RIGHT PANEL: Main Content -->
+      <main class="col-span-1 lg:col-span-8 space-y-6 print-full-width">
+        
+        <!-- Professional Summary -->
+        <section class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-md border border-slate-100 dark:border-slate-700/50 card-shadow">
+          <h3 class="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-3 mb-4 pb-2 border-b border-slate-100 dark:border-slate-700/50">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-brand-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+            <span class="lang-en">Professional Summary</span>
+            <span class="lang-pt">Resumo Profissional</span>
+          </h3>
+          <p class="text-slate-600 dark:text-slate-300 leading-relaxed text-sm md:text-base">
+            <span class="lang-en">Highly accomplished <strong class="font-bold text-brand-600 dark:text-brand-400">Automation Control, Embedded & IoT Engineer</strong> with over 13 years of cross-functional experience in low-level firmware development, industrial automation engineering, and full-stack IoT cloud architectures. Proven expertise in designing, prototyping, and deploying complex control systems—ranging from assistive technology devices for blind individuals to real-time industrial PLCs, smart traffic infrastructure, and ruggedized sensor validation networks. Adept at translating complex automation loops (Siemens, Delta, Schneider Electric) and data communication pipelines (Modbus, Profinet, OPC UA, MQTT) into reliable, high-performance edge devices and monitoring systems.</span>
+            <span class="lang-pt">Engenheiro de <strong class="font-bold text-brand-600 dark:text-brand-400">Automação e Controle, Embarcados & IoT</strong> altamente qualificado, com mais de 13 anos de experiência no ciclo completo de desenvolvimento de firmware de baixo nível, engenharia de automação industrial e arquiteturas de nuvem IoT. Experiência comprovada no projeto, prototipagem e implantação de sistemas complexos de controle — desde dispositivos assistivos para deficientes visuais até CLPs industriais em tempo real, infraestrutura de tráfego inteligente e redes de calibração eletrônica. Adepto em traduzir malhas de automação complexas (Siemens, Delta, Schneider Electric) e fluxos de dados industriais (Modbus, Profinet, OPC UA, MQTT) em dispositivos de borda estáveis e sistemas integrados de monitoramento.</span>
+          </p>
+        </section>
+
+        <!-- Technical Skills Matrix -->
+        <section id="skills-matrix" class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-md border border-slate-100 dark:border-slate-700/50 card-shadow print-no-break">
+          <h3 class="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-3 mb-4 pb-2 border-b border-slate-100 dark:border-slate-700/50">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-brand-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+            </svg>
+            <span class="lang-en">Technical Skills Matrix</span>
+            <span class="lang-pt">Matriz de Habilidades Técnicas</span>
+          </h3>
+          
+          <div class="space-y-4">
+            <!-- Languages -->
+            <div>
+              <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2">
+                <span class="lang-en">Languages</span>
+                <span class="lang-pt">Linguagens de Programação</span>
+              </h4>
+              <div class="flex flex-wrap gap-2">
+                <span onclick="toggleTagFilter('c')" class="skill-badge cursor-pointer px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-lg hover:bg-brand-100 hover:text-brand-700 dark:hover:bg-brand-900/40 dark:hover:text-brand-300 transition-all duration-150 border border-slate-200/50 dark:border-slate-600/50" data-badge-tag="c">C</span>
+                <span onclick="toggleTagFilter('cpp')" class="skill-badge cursor-pointer px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-lg hover:bg-brand-100 hover:text-brand-700 dark:hover:bg-brand-900/40 dark:hover:text-brand-300 transition-all duration-150 border border-slate-200/50 dark:border-slate-600/50" data-badge-tag="cpp">C++</span>
+                <span onclick="toggleTagFilter('python')" class="skill-badge cursor-pointer px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-lg hover:bg-brand-100 hover:text-brand-700 dark:hover:bg-brand-900/40 dark:hover:text-brand-300 transition-all duration-150 border border-slate-200/50 dark:border-slate-600/50" data-badge-tag="python">Python</span>
+                <span onclick="toggleTagFilter('typescript')" class="skill-badge cursor-pointer px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-lg hover:bg-brand-100 hover:text-brand-700 dark:hover:bg-brand-900/40 dark:hover:text-brand-300 transition-all duration-150 border border-slate-200/50 dark:border-slate-600/50" data-badge-tag="typescript">TypeScript</span>
+                <span onclick="toggleTagFilter('javascript')" class="skill-badge cursor-pointer px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-lg hover:bg-brand-100 hover:text-brand-700 dark:hover:bg-brand-900/40 dark:hover:text-brand-300 transition-all duration-150 border border-slate-200/50 dark:border-slate-600/50" data-badge-tag="javascript">JavaScript</span>
+                <span onclick="toggleTagFilter('java')" class="skill-badge cursor-pointer px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-lg hover:bg-brand-100 hover:text-brand-700 dark:hover:bg-brand-900/40 dark:hover:text-brand-300 transition-all duration-150 border border-slate-200/50 dark:border-slate-600/50" data-badge-tag="java">Java</span>
+                <span onclick="toggleTagFilter('swift')" class="skill-badge cursor-pointer px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-lg hover:bg-brand-100 hover:text-brand-700 dark:hover:bg-brand-900/40 dark:hover:text-brand-300 transition-all duration-150 border border-slate-200/50 dark:border-slate-600/50" data-badge-tag="swift">Swift</span>
+              </div>
+            </div>
+
+            <!-- Embedded & IoT -->
+            <div>
+              <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2">
+                <span class="lang-en">Embedded & IoT</span>
+                <span class="lang-pt">Sistemas Embarcados e IoT</span>
+              </h4>
+              <div class="flex flex-wrap gap-2">
+                <span onclick="toggleTagFilter('arm')" class="skill-badge cursor-pointer px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-lg hover:bg-brand-100 hover:text-brand-700 dark:hover:bg-brand-900/40 dark:hover:text-brand-300 transition-all duration-150 border border-slate-200/50 dark:border-slate-600/50" data-badge-tag="arm">ARM (STM32, Cortex-A8)</span>
+                <span onclick="toggleTagFilter('avr')" class="skill-badge cursor-pointer px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-lg hover:bg-brand-100 hover:text-brand-700 dark:hover:bg-brand-900/40 dark:hover:text-brand-300 transition-all duration-150 border border-slate-200/50 dark:border-slate-600/50" data-badge-tag="avr">AVR (ATmega)</span>
+                <span onclick="toggleTagFilter('pic')" class="skill-badge cursor-pointer px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-lg hover:bg-brand-100 hover:text-brand-700 dark:hover:bg-brand-900/40 dark:hover:text-brand-300 transition-all duration-150 border border-slate-200/50 dark:border-slate-600/50" data-badge-tag="pic">PIC Microcontrollers</span>
+                <span onclick="toggleTagFilter('esp32')" class="skill-badge cursor-pointer px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-lg hover:bg-brand-100 hover:text-brand-700 dark:hover:bg-brand-900/40 dark:hover:text-brand-300 transition-all duration-150 border border-slate-200/50 dark:border-slate-600/50" data-badge-tag="esp32">ESP32 & Arduino</span>
+                <span onclick="toggleTagFilter('mqtt')" class="skill-badge cursor-pointer px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-lg hover:bg-brand-100 hover:text-brand-700 dark:hover:bg-brand-900/40 dark:hover:text-brand-300 transition-all duration-150 border border-slate-200/50 dark:border-slate-600/50" data-badge-tag="mqtt">MQTT & REST</span>
+                <span onclick="toggleTagFilter('protocols')" class="skill-badge cursor-pointer px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-lg hover:bg-brand-100 hover:text-brand-700 dark:hover:bg-brand-900/40 dark:hover:text-brand-300 transition-all duration-150 border border-slate-200/50 dark:border-slate-600/50" data-badge-tag="protocols">CAN bus, UART, SPI, I2C, Sockets</span>
+                <span onclick="toggleTagFilter('pcb')" class="skill-badge cursor-pointer px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-lg hover:bg-brand-100 hover:text-brand-700 dark:hover:bg-brand-900/40 dark:hover:text-brand-300 transition-all duration-150 border border-slate-200/50 dark:border-slate-600/50" data-badge-tag="pcb">
+                  <span class="lang-en">Hardware Prototyping & PCB Review</span>
+                  <span class="lang-pt">Prototipagem de Hardware & PCI</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- Industrial Automation -->
+            <div>
+              <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2">
+                <span class="lang-en">Industrial Automation & Control</span>
+                <span class="lang-pt">Automação Industrial & Controle</span>
+              </h4>
+              <div class="flex flex-wrap gap-2">
+                <span onclick="toggleTagFilter('plcs')" class="skill-badge cursor-pointer px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-lg hover:bg-brand-100 hover:text-brand-700 dark:hover:bg-brand-900/40 dark:hover:text-brand-300 transition-all duration-150 border border-slate-200/50 dark:border-slate-600/50" data-badge-tag="plcs">PLCs (Siemens S7, Delta, Schneider Electric)</span>
+                <span onclick="toggleTagFilter('modbus')" class="skill-badge cursor-pointer px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-lg hover:bg-brand-100 hover:text-brand-700 dark:hover:bg-brand-900/40 dark:hover:text-brand-300 transition-all duration-150 border border-slate-200/50 dark:border-slate-600/50" data-badge-tag="modbus">Modbus (RTU/TCP)</span>
+                <span onclick="toggleTagFilter('profinet')" class="skill-badge cursor-pointer px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-lg hover:bg-brand-100 hover:text-brand-700 dark:hover:bg-brand-900/40 dark:hover:text-brand-300 transition-all duration-150 border border-slate-200/50 dark:border-slate-600/50" data-badge-tag="profinet">S7 Profinet</span>
+                <span onclick="toggleTagFilter('opcua')" class="skill-badge cursor-pointer px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-lg hover:bg-brand-100 hover:text-brand-700 dark:hover:bg-brand-900/40 dark:hover:text-brand-300 transition-all duration-150 border border-slate-200/50 dark:border-slate-600/50" data-badge-tag="opcua">OPC UA</span>
+                <span onclick="toggleTagFilter('scada')" class="skill-badge cursor-pointer px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-lg hover:bg-brand-100 hover:text-brand-700 dark:hover:bg-brand-900/40 dark:hover:text-brand-300 transition-all duration-150 border border-slate-200/50 dark:border-slate-600/50" data-badge-tag="scada">SCADA & HMI</span>
+              </div>
+            </div>
+
+            <!-- Software & Cloud -->
+            <div>
+              <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2">
+                <span class="lang-en">Software & Cloud</span>
+                <span class="lang-pt">Software e Computação em Nuvem</span>
+              </h4>
+              <div class="flex flex-wrap gap-2">
+                <span onclick="toggleTagFilter('nodejs')" class="skill-badge cursor-pointer px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-lg hover:bg-brand-100 hover:text-brand-700 dark:hover:bg-brand-900/40 dark:hover:text-brand-300 transition-all duration-150 border border-slate-200/50 dark:border-slate-600/50" data-badge-tag="nodejs">Node.js & Express</span>
+                <span onclick="toggleTagFilter('apis')" class="skill-badge cursor-pointer px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-lg hover:bg-brand-100 hover:text-brand-700 dark:hover:bg-brand-900/40 dark:hover:text-brand-300 transition-all duration-150 border border-slate-200/50 dark:border-slate-600/50" data-badge-tag="apis">REST APIs, JSON, XML</span>
+                <span onclick="toggleTagFilter('pyserial')" class="skill-badge cursor-pointer px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-lg hover:bg-brand-100 hover:text-brand-700 dark:hover:bg-brand-900/40 dark:hover:text-brand-300 transition-all duration-150 border border-slate-200/50 dark:border-slate-600/50" data-badge-tag="pyserial">
+                  <span class="lang-en">Python Automation Scripting</span>
+                  <span class="lang-pt">Scripts de Automação com Python</span>
+                </span>
+                <span onclick="toggleTagFilter('git')" class="skill-badge cursor-pointer px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-lg hover:bg-brand-100 hover:text-brand-700 dark:hover:bg-brand-900/40 dark:hover:text-brand-300 transition-all duration-150 border border-slate-200/50 dark:border-slate-600/50" data-badge-tag="git">Git & CI/CD</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Professional Experience -->
+        <section class="space-y-6">
+          <h3 class="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-3 pb-2 border-b border-slate-100 dark:border-slate-700/50">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-brand-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+            <span class="lang-en">Professional Experience</span>
+            <span class="lang-pt">Experiência Profissional</span>
+          </h3>
+
+          <!-- SOMEH -->
+          <article class="experience-item bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-md border border-slate-100 dark:border-slate-700/50 card-shadow transition-all duration-200 print-no-break"
+            data-experience-tags="c,cpp,arm,avr,mqtt,nodejs,typescript,apis,modbus,opcua,plcs,pcb,profinet">
+            <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-2">
+              <div>
+                <h4 class="text-lg font-bold text-slate-900 dark:text-white">
+                  <span class="lang-en">Automation Control, Embedded Systems & IoT Engineer</span>
+                  <span class="lang-pt">Engenheiro de Automação e Controle, Sistemas Embarcados &e Sistemas Embarcados & IoT</span>
+                </h4>
+                <p class="text-brand-600 dark:text-brand-400 font-semibold text-sm">SOMEH – Projetos, Produtos e Serviços</p>
+              </div>
+              <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 text-xs font-semibold rounded-full shrink-0">
+                <span class="lang-en">Jul 2022 – Present</span>
+                <span class="lang-pt">Jul 2022 – Presente</span>
+              </span>
+            </div>
+            
+            <ul class="mt-4 space-y-2.5 text-slate-600 dark:text-slate-300 text-sm list-disc pl-5">
+              <li class="lang-en"><strong class="text-slate-800 dark:text-slate-200">Industrial Automation & PLC Integration:</strong> Configured and integrated automated industrial control lines utilizing <strong class="text-brand-600 dark:text-brand-400">Siemens S7</strong> and <strong class="text-brand-600 dark:text-brand-400">Delta PLCs</strong>, designing local industrial networks connected via Modbus (RTU/TCP), S7 Profinet, and OPC UA protocols.</li>
+              <li class="lang-pt"><strong class="text-slate-800 dark:text-slate-200">Automação Industrial & CLPs:</strong> Configurou e integrou linhas automatizadas de controle industrial utilizando <strong class="text-brand-600 dark:text-brand-400">CLPs Siemens S7</strong> e <strong class="text-brand-600 dark:text-brand-400">Delta</strong>, projetando redes industriais locais conectadas via protocolos Modbus (RTU/TCP), S7 Profinet e OPC UA.</li>
+              
+              <li class="lang-en"><strong class="text-slate-800 dark:text-slate-200">Bespoke Web Telemetry & Diagnostics:</strong> Designed and implemented local backend servers and real-time visualization dashboards with Node.js, TypeScript, and JSON APIs. Integrated direct telemetry streaming via WebSockets to monitor active PLC registers, reducing field debugging times by <span class="font-bold text-brand-600 dark:text-brand-400">40%</span>.</li>
+              <li class="lang-pt"><strong class="text-slate-800 dark:text-slate-200">Telemetria Web & Diagnósticos:</strong> Projetou e desenvolveu servidores locais e dashboards em tempo real com Node.js, TypeScript e APIs JSON. Integrou fluxos de dados via WebSockets para leitura ativa de registradores de CLPs, reduzindo o tempo de depuração em campo em <span class="font-bold text-brand-600 dark:text-brand-400">40%</span>.</li>
+              
+              <li class="lang-en"><strong class="text-slate-800 dark:text-slate-200">Firmware Engineering (C/C++):</strong> Engineered robust firmware for ARM (STM32) and AVR-based proprietary industrial control cards, decreasing runtime processor faults and system crashes by over <span class="font-bold text-brand-600 dark:text-brand-400">95%</span> through memory-safe pointer blocks and optimized ISR routines.</li>
+              <li class="lang-pt"><strong class="text-slate-800 dark:text-slate-200">Desenvolvimento de Firmware (C/C++):</strong> Desenvolveu firmware robusto em C/C++ para placas controladoras industriais proprietárias baseadas em ARM (STM32) e AVR, diminuindo travamentos de hardware e falhas de processamento em mais de <span class="font-bold text-brand-600 dark:text-brand-400">95%</span>.</li>
+              
+              <li class="lang-en"><strong class="text-slate-800 dark:text-slate-200">Telemetry & Cloud Communication:</strong> Integrated communication modules using MQTT and REST frameworks, bridging localized industrial machinery metrics with secure remote cloud monitoring systems.</li>
+              <li class="lang-pt"><strong class="text-slate-800 dark:text-slate-200">Telemetria e Conexão em Nuvem:</strong> Integrou módulos de comunicação usando MQTT e REST, unindo as métricas locais de máquinas industriais com sistemas de monitoramento em nuvem remotos e seguros.</li>
+            </ul>
+          </article>
+
+          <!-- WIER Tecnologia -->
+          <article class="experience-item bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-md border border-slate-100 dark:border-slate-700/50 card-shadow transition-all duration-200 print-no-break"
+            data-experience-tags="python,pyserial,pcb,protocols,arm">
+            <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-2">
+              <div>
+                <h4 class="text-lg font-bold text-slate-900 dark:text-white">
+                  <span class="lang-en">Embedded Systems & Test Engineer (Contract / R&D Consultant)</span>
+                  <span class="lang-pt">Engenheiro de Sistemas Embarcados & Testes (Consultor / Contrato)</span>
+                </h4>
+                <p class="text-brand-600 dark:text-brand-400 font-semibold text-sm">WIER Tecnologia</p>
+              </div>
+              <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 text-xs font-semibold rounded-full shrink-0">
+                <span class="lang-en">Oct 2019 – Oct 2021</span>
+                <span class="lang-pt">Out 2019 – Out 2021</span>
+              </span>
+            </div>
+            
+            <ul class="mt-4 space-y-2.5 text-slate-600 dark:text-slate-300 text-sm list-disc pl-5">
+              <li class="lang-en"><strong class="text-slate-800 dark:text-slate-200">Hardware Prototyping & Testing:</strong> Conducted physical testing, signal measurement, and calibration of sensors and actuator boards for advanced industrial ozone and plasma generation equipment, ensuring reliable integration under high-voltage conditions.</li>
+              <li class="lang-pt"><strong class="text-slate-800 dark:text-slate-200">Prototipagem de Hardware & Testes:</strong> Executou testes físicos, medição de sinais elétricos e calibração de placas atuadoras e sensores de ozônio e geradores de plasma, garantindo uma integração de firmware estável sob altas tensões elétricas.</li>
+              
+              <li class="lang-en"><strong class="text-slate-800 dark:text-slate-200">Python Test Automation:</strong> Programmed custom, automated <strong class="text-brand-600 dark:text-brand-400">Python-based test tools</strong> and scripting utilities (using libraries like PySerial) to run hardware-in-the-loop (HIL) diagnostics and validate microcontroller communications over UART/RS-485.</li>
+              <li class="lang-pt"><strong class="text-slate-800 dark:text-slate-200">Automação de Testes com Python:</strong> Programou e arquitetou <strong class="text-brand-600 dark:text-brand-400">ferramentas de teste automáticas em Python</strong> (usando bibliotecas como PySerial) para rodar simulações em malha fechada (HIL) e validar fluxos de pacotes seriais seriais via UART/RS-485.</li>
+              
+              <li class="lang-en"><strong class="text-slate-800 dark:text-slate-200">System Integration:</strong> Assisted in the configuration and flashing of custom OS components on ARM Cortex-A8 hardware targets, coordinating hardware integration tests with upper-level application engineers.</li>
+              <li class="lang-pt"><strong class="text-slate-800 dark:text-slate-200">Integração de Sistemas:</strong> Apoiou na parametrização e flashing de módulos de hardware industriais baseados em ARM Cortex-A8, garantindo sincronização correta com sistemas desktop e servidores do cliente.</li>
+            </ul>
+          </article>
+
+          <!-- PrototypeIDI -->
+          <article class="experience-item bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-md border border-slate-100 dark:border-slate-700/50 card-shadow transition-all duration-200 print-no-break"
+            data-experience-tags="python,javascript,pcb,cpp">
+            <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-2">
+              <div>
+                <h4 class="text-lg font-bold text-slate-900 dark:text-white">
+                  <span class="lang-en">Chief Technology Officer (CTO)</span>
+                  <span class="lang-pt">Diretor de Tecnologia (CTO)</span>
+                </h4>
+                <p class="text-brand-600 dark:text-brand-400 font-semibold text-sm">PrototypeIDI</p>
+              </div>
+              <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 text-xs font-semibold rounded-full shrink-0">
+                <span class="lang-en">Jan 2016 – Jan 2018</span>
+                <span class="lang-pt">Jan 2016 – Jan 2018</span>
+              </span>
+            </div>
+            
+            <ul class="mt-4 space-y-2.5 text-slate-600 dark:text-slate-300 text-sm list-disc pl-5">
+              <li class="lang-en"><strong class="text-slate-800 dark:text-slate-200">Strategic Technical Leadership:</strong> Directed a team of engineers to deliver custom hardware and software solutions matching clients' strict budget thresholds and target operational parameters.</li>
+              <li class="lang-pt"><strong class="text-slate-800 dark:text-slate-200">Direção Técnica Estratégica:</strong> Liderou e coordenou uma equipe de desenvolvimento para projetar e validar hardware customizado que respondesse aos requerimentos e restrições orçamentárias de clientes.</li>
+              
+              <li class="lang-en"><strong class="text-slate-800 dark:text-slate-200">Assistive Technology Innovation:</strong> Spearheaded the R&D and implementation of customized electronic gadgets (including specialized Braille training hardware), directly improving feedback loops and usability for blind and visually impaired users.</li>
+              <li class="lang-pt"><strong class="text-slate-800 dark:text-slate-200">Projetos de Tecnologia Assistiva:</strong> Liderou a prototipagem e desenvolvimento de tecnologias de acessibilidade ativa para deficientes visuais (especialmente controladores mecânicos com resposta em Braille), refinando a calibração de loops de entrada/saída.</li>
+              
+              <li class="lang-en"><strong class="text-slate-800 dark:text-slate-200">Full-Stack Development:</strong> Developed clean, responsive web dashboards and instrumentation interfaces using Python and JS, allowing remote monitoring of localized IoT networks.</li>
+              <li class="lang-pt"><strong class="text-slate-800 dark:text-slate-200">Desenvolvimento Full-Stack:</strong> Desenvolveu interfaces web para painéis de monitoramento e de calibração utilizando frameworks leves de Python e JavaScript para permitir leitura analógica em redes locais.</li>
+            </ul>
+          </article>
+
+          <!-- PROCELEC CÍA. LTDA. -->
+          <article class="experience-item bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-md border border-slate-100 dark:border-slate-700/50 card-shadow transition-all duration-200 print-no-break"
+            data-experience-tags="pic,arm,protocols">
+            <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-2">
+              <div>
+                <h4 class="text-lg font-bold text-slate-900 dark:text-white">
+                  <span class="lang-en">Hardware & Software Development Engineer</span>
+                  <span class="lang-pt">Engenheiro de Desenvolvimento de Hardware & Software</span>
+                </h4>
+                <p class="text-brand-600 dark:text-brand-400 font-semibold text-sm">PROCELEC CÍA. LTDA.</p>
+              </div>
+              <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 text-xs font-semibold rounded-full shrink-0">
+                <span class="lang-en">Mar 2013 – Jan 2016 / May 2018 - Nov 2019</span>
+                <span class="lang-pt">Mar 2013 – Jan 2016 / Mai 2018 - Nov 2019</span>
+              </span>
+            </div>
+            
+            <ul class="mt-4 space-y-2.5 text-slate-600 dark:text-slate-300 text-sm list-disc pl-5">
+              <li class="lang-en"><strong class="text-slate-800 dark:text-slate-200">Urban Mobility & Traffic Systems:</strong> Designed and developed hardware, firmware, and software for intelligent urban mobility controllers, railroad/train transit coordination nodes, and real-time smart signal lights.</li>
+              <li class="lang-pt"><strong class="text-slate-800 dark:text-slate-200">Sistemas de Mobilidade Urbana:</strong> Projetou e desenvolveu o hardware, firmware e software para controladores inteligentes de mobilidade urbana, nós de coordenação ferroviária e semáforos inteligentes em tempo real.</li>
+              
+              <li class="lang-en"><strong class="text-slate-800 dark:text-slate-200">GPS Telemetry & Fleet Tracking:</strong> Built commercial-grade GPS tracking modules and multi-tenant smart building access/parking gates under ARM and PIC architectures.</li>
+              <li class="lang-pt"><strong class="text-slate-800 dark:text-slate-200">Telemetria GPS & Rastreamento de Frota:</strong> Desenvolveu módulos comerciais de rastreamento de frotas por GPS e sistemas de controle de portão/acesso inteligente para estacionamentos de alta densidade usando PIC e ARM.</li>
+              
+              <li class="lang-en"><strong class="text-slate-800 dark:text-slate-200">Custom Network Protocols:</strong> Formulated proprietary, custom communication protocols running over raw Ethernet Sockets and serial communication lines (RS-232, RS-485), achieving highly customizable and fast telemetry packet transfers.</li>
+              <li class="lang-pt"><strong class="text-slate-800 dark:text-slate-200">Protocolos de Rede Proprietários:</strong> Formulou protocolos de comunicação proprietários rodando sob Sockets Ethernet puros e portas seriais (RS-232, RS-485), obtendo transferências flexíveis e eficientes de pacotes de dados.</li>
+            </ul>
+          </article>
+
+          <!-- Universidad Politécnica Salesiana -->
+          <article class="experience-item bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-md border border-slate-100 dark:border-slate-700/50 card-shadow transition-all duration-200 print-no-break"
+            data-experience-tags="plcs,profinet,modbus">
+            <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-2">
+              <div>
+                <h4 class="text-lg font-bold text-slate-900 dark:text-white">
+                  <span class="lang-en">Continuous Process Laboratory Manager & Research Assistant</span>
+                  <span class="lang-pt">Gestor de Laboratório de Processos Contínuos & Pesquisador</span>
+                </h4>
+                <p class="text-brand-600 dark:text-brand-400 font-semibold text-sm">Universidad Politécnica Salesiana</p>
+              </div>
+              <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 text-xs font-semibold rounded-full shrink-0">
+                <span class="lang-en">Jun 2012 – Jan 2015</span>
+                <span class="lang-pt">Jun 2012 – Jan 2015</span>
+              </span>
+            </div>
+            
+            <ul class="mt-4 space-y-2.5 text-slate-600 dark:text-slate-300 text-sm list-disc pl-5">
+              <li class="lang-en"><strong class="text-slate-800 dark:text-slate-200">Industrial Process Rig Management:</strong> Managed and programmed automated chemical and material continuous process lines. Wired and programmed industrial PLCs (<strong class="text-slate-800 dark:text-slate-200">Siemens S7</strong> and <strong class="text-slate-800 dark:text-slate-200">Schneider Electric</strong>) to control closed-loop flow, level, temperature, and pressure processes.</li>
+              <li class="lang-pt"><strong class="text-slate-800 dark:text-slate-200">Gestão de Bancadas de Processos:</strong> Administrou e programou bancadas industriais de malha de processos contínuos de fluidos e materiais. Configurou e programou CLPs industriais das marcas <strong class="text-slate-800 dark:text-slate-200">Siemens S7</strong> e <strong class="text-slate-800 dark:text-slate-200">Schneider Electric</strong> para controle fechado de vazão, nível, temperatura e pressão.</li>
+              
+              <li class="lang-en"><strong class="text-slate-800 dark:text-slate-200">Rotating Machinery Failure Diagnosis:</strong> Co-authored condition-based predictive maintenance research, acquiring complex vibration signatures from machinery and developing machine learning classification models to isolate prospective mechanical faults.</li>
+              <li class="lang-pt"><strong class="text-slate-800 dark:text-slate-200">Pesquisa e Predição de Falhas:</strong> Desenvolveu pesquisas de manutenção preditiva baseada em condições (CBM), extraindo espectros de vibração harmônica de rolamentos e motores, e criando modelos estatísticos inteligentes para isolar falhas futuras de máquinas.</li>
+            </ul>
+          </article>
+        </section>
+
+        <!-- Highlighted Projects -->
+        <section class="space-y-4 print-page-break">
+          <h3 class="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-3 pb-2 border-b border-slate-100 dark:border-slate-700/50">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-brand-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+            </svg>
+            <span class="lang-en">Highlighted Repositories & Projects</span>
+            <span class="lang-pt">Projetos & Repositórios em Destaque</span>
+          </h3>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 print-grid">
+            
+            <!-- Project 1 -->
+            <div class="project-card bg-white dark:bg-slate-800 rounded-2xl p-5 shadow-md border border-slate-100 dark:border-slate-700/50 card-shadow hover:shadow-lg transition-all duration-300 flex flex-col justify-between print-no-break"
+              data-project-tags="python,pyserial">
+              <div>
+                <div class="flex justify-between items-start gap-2">
+                  <h4 class="font-bold text-slate-900 dark:text-white text-base">
+                    <span class="lang-en">Python Hardware Automation & Test Utilities</span>
+                    <span class="lang-pt">Scripts Python para Validação de Hardware</span>
+                  </h4>
+                  <span class="px-2 py-0.5 bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 text-[10px] font-bold rounded uppercase tracking-wider">
+                    <span class="lang-en">Internal R&D</span>
+                    <span class="lang-pt">P&D Interno</span>
+                  </span>
+                </div>
+                <p class="text-slate-600 dark:text-slate-300 text-xs mt-2.5 leading-relaxed">
+                  <span class="lang-en">A collection of custom test harnesses and GUI/scripting utilities designed to streamline hardware calibration and communication verification.</span>
+                  <span class="lang-pt">Biblioteca de utilitários gráficos de depuração para automatizar calibrações eletrônicas e interceptação de pacotes de dados via portas COM.</span>
+                </p>
+                <p class="text-slate-500 dark:text-slate-400 text-xs mt-3 flex items-center gap-1">
+                  <span class="w-2.5 h-2.5 rounded-full bg-blue-500 shrink-0"></span> Python (PySerial)
+                </p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700/50 flex justify-between items-center text-xs">
+                <span class="text-slate-400 font-semibold uppercase tracking-wider text-[10px]">
+                  <span class="lang-en">Embedded Testing</span>
+                  <span class="lang-pt">Testes de Embarcados</span>
+                </span>
+                <span class="text-brand-600 dark:text-brand-400 font-medium">HIL Simulation</span>
+              </div>
+            </div>
+
+            <!-- Project 2 -->
+            <div class="project-card bg-white dark:bg-slate-800 rounded-2xl p-5 shadow-md border border-slate-100 dark:border-slate-700/50 card-shadow hover:shadow-lg transition-all duration-300 flex flex-col justify-between print-no-break"
+              data-project-tags="cpp,c,typescript,nodejs,apis">
+              <div>
+                <div class="flex justify-between items-start gap-2">
+                  <h4 class="font-bold text-slate-900 dark:text-white text-base">Hoppers-Server & Hoppers-Body</h4>
+                  <span class="px-2 py-0.5 bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 text-[10px] font-bold rounded uppercase tracking-wider">
+                    <span class="lang-en">Active IoT</span>
+                    <span class="lang-pt">IoT Ativo</span>
+                  </span>
+                </div>
+                <p class="text-slate-600 dark:text-slate-300 text-xs mt-2.5 leading-relaxed">
+                  <span class="lang-en">End-to-end framework managing real-time states, events, and actions of physical hardware units over localized networks.</span>
+                  <span class="lang-pt">Estrutura completa orientada a eventos físicos com conexões assíncronas para controle local e sincronização de telemetria.</span>
+                </p>
+                <p class="text-slate-500 dark:text-slate-400 text-xs mt-3 flex items-center gap-1">
+                  <span class="w-2.5 h-2.5 rounded-full bg-teal-500 shrink-0"></span> C++ / Node.js
+                </p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700/50 flex justify-between items-center text-xs">
+                <span class="text-slate-400 font-semibold uppercase tracking-wider text-[10px]">
+                  <span class="lang-en">Full-Stack IoT</span>
+                  <span class="lang-pt">IoT Full-Stack</span>
+                </span>
+                <span class="text-brand-600 dark:text-brand-400 font-medium">
+                  <span class="lang-en">Event-driven Architecture</span>
+                  <span class="lang-pt">Arquitetura de Eventos</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- Project 3 -->
+            <div class="project-card bg-white dark:bg-slate-800 rounded-2xl p-5 shadow-md border border-slate-100 dark:border-slate-700/50 card-shadow hover:shadow-lg transition-all duration-300 flex flex-col justify-between print-no-break"
+              data-project-tags="cpp,c">
+              <div>
+                <div class="flex justify-between items-start gap-2">
+                  <h4 class="font-bold text-slate-900 dark:text-white text-base">
+                    <span class="lang-en">Braille Trainer System</span>
+                    <span class="lang-pt">Treinador de Braille Assistivo</span>
+                  </h4>
+                  <span class="px-2 py-0.5 bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 text-[10px] font-bold rounded uppercase tracking-wider">
+                    <span class="lang-en">Social Impact</span>
+                    <span class="lang-pt">Impacto Social</span>
+                  </span>
+                </div>
+                <p class="text-slate-600 dark:text-slate-300 text-xs mt-2.5 leading-relaxed">
+                  <span class="lang-en">Assistive electronic teaching gadget developed for blind and visually impaired students to train character recognition dynamically.</span>
+                  <span class="lang-pt">Dispositivo mecânico assistivo integrado com resposta ativa em tempo real para permitir aprendizado dinâmico de alfabeto táctil para cegos.</span>
+                </p>
+                <p class="text-slate-500 dark:text-slate-400 text-xs mt-3 flex items-center gap-1">
+                  <span class="w-2.5 h-2.5 rounded-full bg-violet-500 shrink-0"></span> Embedded C/C++
+                </p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700/50 flex justify-between items-center text-xs">
+                <span class="text-slate-400 font-semibold uppercase tracking-wider text-[10px]">
+                  <span class="lang-en">Assistive Devices</span>
+                  <span class="lang-pt">Tecnologia Assistiva</span>
+                </span>
+                <span class="text-brand-600 dark:text-brand-400 font-medium">Firmware</span>
+              </div>
+            </div>
+
+            <!-- Project 4 -->
+            <div class="project-card bg-white dark:bg-slate-800 rounded-2xl p-5 shadow-md border border-slate-100 dark:border-slate-700/50 card-shadow hover:shadow-lg transition-all duration-300 flex flex-col justify-between print-no-break"
+              data-project-tags="java,apis">
+              <div>
+                <div class="flex justify-between items-start gap-2">
+                  <h4 class="font-bold text-slate-900 dark:text-white text-base">XML2Printer Pipeline</h4>
+                  <span class="px-2 py-0.5 bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 text-[10px] font-bold rounded uppercase tracking-wider">
+                    <span class="lang-en">Utility Engine</span>
+                    <span class="lang-pt">Motor Utilitário</span>
+                  </span>
+                </div>
+                <p class="text-slate-600 dark:text-slate-300 text-xs mt-2.5 leading-relaxed">
+                  <span class="lang-en">High-performance parsing engine designed to transform schemas and raw XML logs into physical layout coordinates and hardware instruction arrays.</span>
+                  <span class="lang-pt">Motor de serialização orientado a objetos que mapeia marcas de arquivos estruturados (XML) em comandos físicos para impressoras industriais.</span>
+                </p>
+                <p class="text-slate-500 dark:text-slate-400 text-xs mt-3 flex items-center gap-1">
+                  <span class="w-2.5 h-2.5 rounded-full bg-amber-600 shrink-0"></span> Java (OOP)
+                </p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-700/50 flex justify-between items-center text-xs">
+                <span class="text-slate-400 font-semibold uppercase tracking-wider text-[10px]">
+                  <span class="lang-en">Data Parsing</span>
+                  <span class="lang-pt">Processamento de Dados</span>
+                </span>
+                <span class="text-brand-600 dark:text-brand-400 font-medium">
+                  <span class="lang-en">Serialization</span>
+                  <span class="lang-pt">Serialização</span>
+                </span>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Education -->
+        <section class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-md border border-slate-100 dark:border-slate-700/50 card-shadow print-no-break">
+          <h3 class="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-3 mb-4 pb-2 border-b border-slate-100 dark:border-slate-700/50">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-brand-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+            </svg>
+            <span class="lang-en">Education</span>
+            <span class="lang-pt">Formação Acadêmica</span>
+          </h3>
+          <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-2">
+            <div>
+              <h4 class="font-bold text-slate-900 dark:text-white text-base">
+                <span class="lang-en">Engineer's Degree in Electrical, Electronics, and Communications Engineering</span>
+                <span class="lang-pt">Título de Engenheiro Eletricista, Eletrônico e de Telecomunicações</span>
+              </h4>
+              <p class="text-brand-600 dark:text-brand-400 font-semibold text-sm">
+                <span class="lang-en">Universidad Politécnica Salesiana de Cuenca, Ecuador</span>
+                <span class="lang-pt">Universidade Politécnica Salesiana de Cuenca, Equador</span>
+              </p>
+              <p class="text-slate-500 dark:text-slate-400 text-xs mt-1">
+                <span class="lang-en">Focus Areas: Power Electronics, Control Systems, Digital Signal Processing, Telemetry, and Continuous Process Automation.</span>
+                <span class="lang-pt">Áreas de Foco: Eletrônica de Potência, Sistemas de Controle, Processamento Digital de Sinais, Telemetria e Automação de Processos Contínuos.</span>
+              </p>
+            </div>
+            <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-500 dark:text-slate-400 text-xs font-semibold rounded-full shrink-0">
+              <span class="lang-en">Graduated 2011</span>
+              <span class="lang-pt">Graduado em 2011</span>
+            </span>
+          </div>
+        </section>
+
+      </main>
+
+    </div>
+  </div>
+
+  <!-- Vanilla JavaScript for Interactive State Management -->
+  <script>
+    let activeTag = null;
+
+    // Toggle Dynamic Language (EN/PT)
+    function toggleLanguage() {
+      const html = document.documentElement;
+      const isPt = html.classList.contains('lang-pt');
+
+      if (isPt) {
+        html.classList.remove('lang-pt');
+        localStorage.setItem('lang', 'en');
+      } else {
+        html.classList.add('lang-pt');
+        localStorage.setItem('lang', 'pt');
+      }
+    }
+
+    // Toggle Dark / Light Theme
+    function toggleDarkMode() {
+      const html = document.documentElement;
+      const isDark = html.classList.contains('dark');
+      
+      const darkIcon = document.getElementById('themeToggleDarkIcon');
+      const lightIcon = document.getElementById('themeToggleLightIcon');
+
+      if (isDark) {
+        html.classList.remove('dark');
+        darkIcon.classList.add('hidden');
+        lightIcon.classList.remove('hidden');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.classList.add('dark');
+        darkIcon.classList.remove('hidden');
+        lightIcon.classList.add('hidden');
+        localStorage.setItem('theme', 'dark');
+      }
+    }
+
+    // Initialize System States
+    window.addEventListener('load', () => {
+      // Theme
+      const storedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      
+      const html = document.documentElement;
+      const darkIcon = document.getElementById('themeToggleDarkIcon');
+      const lightIcon = document.getElementById('themeToggleLightIcon');
+
+      if (storedTheme === 'dark' || (!storedTheme && prefersDark)) {
+        html.classList.add('dark');
+        darkIcon.classList.remove('hidden');
+        lightIcon.classList.add('hidden');
+      } else {
+        html.classList.remove('dark');
+        darkIcon.classList.add('hidden');
+        lightIcon.classList.remove('hidden');
+      }
+
+      // Language
+      const storedLang = localStorage.getItem('lang');
+      if (storedLang === 'pt') {
+        html.classList.add('lang-pt');
+      } else {
+        html.classList.remove('lang-pt');
+      }
+    });
+
+    // Tag Filtering for Interactive Component
+    function toggleTagFilter(tag) {
+      if (activeTag === tag) {
+        clearTagFilters();
+        return;
+      }
+      activeTag = tag;
+
+      // Update badge visuals
+      const badges = document.querySelectorAll('.skill-badge');
+      badges.forEach(b => {
+        const badgeTag = b.getAttribute('data-badge-tag');
+        if (badgeTag === tag) {
+          b.classList.add('bg-brand-600', 'text-white', 'highlight-glow');
+          b.classList.remove('bg-slate-100', 'dark:bg-slate-700', 'text-slate-700', 'dark:text-slate-200');
+        } else {
+          b.classList.remove('bg-brand-600', 'text-white', 'highlight-glow');
+          b.classList.add('bg-slate-100', 'dark:bg-slate-700', 'text-slate-700', 'dark:text-slate-200');
+        }
+      });
+
+      // Filter Professional Experience
+      const experiences = document.querySelectorAll('.experience-item');
+      experiences.forEach(exp => {
+        const tagsString = exp.getAttribute('data-experience-tags') || '';
+        const tagsArray = tagsString.split(',').map(t => t.trim());
+        if (tagsArray.includes(tag)) {
+          exp.classList.remove('fade-out');
+          exp.classList.add('ring-2', 'ring-brand-500', 'dark:ring-brand-400');
+        } else {
+          exp.classList.add('fade-out');
+          exp.classList.remove('ring-2', 'ring-brand-500', 'dark:ring-brand-400');
+        }
+      });
+
+      // Filter Projects
+      const projects = document.querySelectorAll('.project-card');
+      projects.forEach(proj => {
+        const tagsString = proj.getAttribute('data-project-tags') || '';
+        const tagsArray = tagsString.split(',').map(t => t.trim());
+        if (tagsArray.includes(tag)) {
+          proj.classList.remove('fade-out');
+          proj.classList.add('ring-2', 'ring-brand-500', 'dark:ring-brand-400');
+        } else {
+          proj.classList.add('fade-out');
+          proj.classList.remove('ring-2', 'ring-brand-500', 'dark:ring-brand-400');
+        }
+      });
+
+      document.getElementById('clearFiltersBtn').classList.remove('hidden');
+    }
+
+    // Reset Filters
+    function clearTagFilters() {
+      activeTag = null;
+      
+      const badges = document.querySelectorAll('.skill-badge');
+      badges.forEach(b => {
+        b.classList.remove('bg-brand-600', 'text-white', 'highlight-glow');
+        b.classList.add('bg-slate-100', 'dark:bg-slate-700', 'text-slate-700', 'dark:text-slate-200');
+      });
+
+      const experiences = document.querySelectorAll('.experience-item');
+      experiences.forEach(exp => {
+        exp.classList.remove('fade-out', 'ring-2', 'ring-brand-500', 'dark:ring-brand-400');
+      });
+
+      const projects = document.querySelectorAll('.project-card');
+      projects.forEach(proj => {
+        proj.classList.remove('fade-out', 'ring-2', 'ring-brand-500', 'dark:ring-brand-400');
+      });
+
+      document.getElementById('clearFiltersBtn').classList.add('hidden');
+    }
+  </script>
+</body>
+</html>
